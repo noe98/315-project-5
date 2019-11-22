@@ -13,8 +13,8 @@ max_len = 250
 embedding_length = 32
 dropout = .3
 hidden_dims = 100
-epochs = 5
-batch_size = 64
+epochs = 3
+batch_size = 128
 
 # Next two lines only uncomment if you get an allow_pickle error
 # np_load_old = np.load
@@ -78,4 +78,4 @@ model.fit(x_train, y_train, epochs=epochs, batch_size=batch_size)
 scores = model.evaluate(x_test, y_test)
 
 # Print the 
-print("Accuracy: %.0f" % (scores[1]*100) + "%")
+print("Accuracy: %.2f%%" % (scores[1]*100))
