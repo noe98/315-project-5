@@ -56,14 +56,39 @@ model.compile(
         optimizer='adam', 
         metrics=['accuracy'])
 
+# Stacked (aka 'deep deep') LSTM RNN
+max_words = max_words
+max_len = max_len
+embedding_length = embedding_length
+dropout = dropout
+hidden_dims = hidden_dims
+epochs = epochs
+batch_size = batch_size
+
+modelS = Sequential()
+modelS.add(Embedding(input_dim = max_words, 
+                    output_dim = embedding_length, 
+                    input_length=max_len))
+modelS.add(Dropout(dropout))
+modelS.add(LSTM(hidden_dims, return_sequences=True))
+modelS.add(Dropout(dropout))
+modelS.add(LSTM(hidden_dims))
+modelS.add(Dropout(dropout))
+modelS.add(Dense(1, activation='sigmoid'))
+modelS.compile(
+        loss='binary_crossentropy', 
+        optimizer='adam', 
+        metrics=['accuracy'])
+
+
 # Attempt at a talos hyperparameter optimization search
-#params = {'max_words': (500,1000,2500,5000),
-#          'max_len': (50, 100, 500, 1000),
+#params = {'max_words': (500,5000),
+#          'max_len': (100, 500),
 #          'embedding_length': (16, 32, 64, 128),
 #          'dropout': [0.3],
-#          'hidden_dims': (100,200,300),
-#          'epochs': (2,3,5),
-#          'batch_size': (32,64,128)}
+#          'hidden_dims': (100,300),
+#          'epochs': (3,5),
+#          'batch_size': (32,128)}
 #
 #t = talos.Scan(x=x_train,
 #               y=y_train,
@@ -73,9 +98,12 @@ model.compile(
 
 # Train the model with xtrain and ytrain with the epoch and batch_size hyperaparameters
 model.fit(x_train, y_train, epochs=epochs, batch_size=batch_size)
+modelS.fit(x_train, y_train, epochs=epochs, batch_size=batch_size)
 
 # Test the accuracy of the model with the xtest and ytest
-scores = model.evaluate(x_test, y_test)
+score1 = model.evaluate(x_test, y_test)
+score2 = modelS.evaluate(x_test, y_test)
 
-# Print the 
-print("Accuracy: %.2f%%" % (scores[1]*100))
+# Print the accuracy
+print("Vanilla Accuracy: %.2f%%" % (score1[1]*100))
+print("Stacked Accuracy: %.2f%%" % (score2[1]*100))
