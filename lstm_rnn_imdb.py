@@ -12,7 +12,7 @@ max_words = 5000
 max_len = 250
 embedding_length = 32
 dropout = .3
-hidden_dims = 100
+hidden_dims = 200
 epochs = 3
 batch_size = 128
 
@@ -47,7 +47,7 @@ model.add(LSTM(hidden_dims))
 # Set dropout to the dropout hyperparameter set at the top
 model.add(Dropout(dropout))
 
-# Add the dense hidden layer with an output dim of 1 (binary output) and a sigmoid activation function
+# Add the dense layer with an output dim of 1 (binary output) and a sigmoid activation function
 model.add(Dense(1, activation='sigmoid'))
 
 # Set the loss function, optimization algorithm, and reporting metric for the model
@@ -56,13 +56,19 @@ model.compile(
         optimizer='adam', 
         metrics=['accuracy'])
 
+# Train the model with xtrain and ytrain with the epoch and batch_size hyperaparameters
+model.fit(x_train, y_train, epochs=epochs, batch_size=batch_size)
+
+# Test the accuracy of the model with the xtest and ytest
+score1 = model.evaluate(x_test, y_test)
+
 # Stacked (aka 'deep deep') LSTM RNN
 max_words = max_words
 max_len = max_len
 embedding_length = embedding_length
 dropout = dropout
 hidden_dims = hidden_dims
-epochs = epochs
+epochs = 2
 batch_size = batch_size
 
 modelS = Sequential()
@@ -97,11 +103,9 @@ modelS.compile(
 #               experiment_name="x")
 
 # Train the model with xtrain and ytrain with the epoch and batch_size hyperaparameters
-model.fit(x_train, y_train, epochs=epochs, batch_size=batch_size)
 modelS.fit(x_train, y_train, epochs=epochs, batch_size=batch_size)
 
 # Test the accuracy of the model with the xtest and ytest
-score1 = model.evaluate(x_test, y_test)
 score2 = modelS.evaluate(x_test, y_test)
 
 # Print the accuracy
