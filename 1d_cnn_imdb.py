@@ -8,15 +8,15 @@ from keras.layers import Conv1D, MaxPooling1D, Bidirectional, LSTM
 
 # Hyperparameters
 max_words = 5000
-max_len = 200
-embedding_dims = 256 #Jack this up
+max_len = 300
+embedding_dims = 128  
 dropout = .3
-filters = 250
+filters = 32 
 kernel_size = 3
 pool_size = 4
-lstm_dims = 100
+lstm_dims = 100 
 epochs = 2
-batch_size = 128
+batch_size = 64
 
 # Next two lines only uncomment if you get an allow_pickle error
 # np_load_old = np.load
@@ -43,19 +43,24 @@ model.add(Embedding(input_dim = max_words,
 # Set dropout to the dropout hyperparameter set at the top
 model.add(Dropout(dropout))
 
-# Add an LSTM layer with dim = hidden_dims hyperparameter at the top
+# Add a convolutional layer
 model.add(Conv1D(filters,
                  kernel_size,
                  padding='valid',
                  activation='relu',
                  strides=1))
 
-model.add(MaxPooling1D(pool_size))
+# Add the pooling layer for the convolutional layer
+model.add(MaxPooling1D(pool_size,
+                       padding='valid'))
 
-# model.add(Bidirectional(LSTM(lstm_dims)))
-model.add(LSTM(lstm_dims))
+# model.add(Dropout(dropout))
+# model.add(LSTM(lstm_dims))
+
+model.add(Bidirectional(LSTM(lstm_dims, recurrent_dropout=0.1)))
 
 # Add the dense layer with an output dim of 1 (binary output) and a sigmoid activation function
+model.add(Dropout(dropout))
 model.add(Dense(1, activation='sigmoid'))
 
 # Set the loss function, optimization algorithm, and reporting metric for the model
