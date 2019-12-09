@@ -13,7 +13,7 @@ from keras.layers import Conv2D, MaxPooling2D
 import os
 
 batch_size = 32
-num-classes = 10
+num_classes = 10
 epochs = 100
 save_dir = os.path.join(os.getcwd(), 'saved_models')
 model_name = 'CSCI_315_CIFAR_10'
@@ -27,7 +27,7 @@ y_test = keras.utils.to_categorical(y_test, num_classes)
 
 # normalize the dataset
 x_train = x_train.astype('float32')
-x_test = x_test.astype('flaot32')
+x_test = x_test.astype('float32')
 x_train = x_train / 255
 x_test = x_test / 255
 
