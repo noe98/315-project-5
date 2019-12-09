@@ -12,9 +12,9 @@ from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 import os
 
-batch_size = 32
-num-classes = 10
-epochs = 100
+batch_size = 16
+num_classes = 10
+epochs = 20
 save_dir = os.path.join(os.getcwd(), 'saved_models')
 model_name = 'CSCI_315_CIFAR_10'
 
@@ -27,20 +27,20 @@ y_test = keras.utils.to_categorical(y_test, num_classes)
 
 # normalize the dataset
 x_train = x_train.astype('float32')
-x_test = x_test.astype('flaot32')
+x_test = x_test.astype('float32')
 x_train = x_train / 255
 x_test = x_test / 255
 
 # define the model
 model = Sequential()
-model.add(Conv2D(32, (3, 3), padding= 'same', input_shape = x_train.shape[1:]),\
-          activation = 'relu')
-model.add(Conv2D(32, (3, 3), activation = 'relu'))
+model.add(Conv2D(64, (3, 3), padding= 'same', input_shape = x_train.shape[1:],
+          activation = 'relu'))
+model.add(Conv2D(64, (3, 3), activation = 'relu'))
 model.add(MaxPooling2D(pool_size=(2,2)))
 model.add(Dropout(0.25))
 
-model.add(Conv2D(64, (3, 3), padding = 'same', activation = 'relu'))
-model.add(Conv2D(64, (3, 3), activation = 'relu'))
+model.add(Conv2D(128, (3, 3), padding = 'same', activation = 'relu'))
+model.add(Conv2D(128, (3, 3), activation = 'relu'))
 model.add(MaxPooling2D(pool_size=(2,2)))
 model.add(Dropout(0.25))
 
@@ -69,12 +69,3 @@ print("Saved trained model at %s" % model_path)
 scores = model.evaluate(x_test, y_test, verbose = 1)
 print("Test Loss: ", scores[0])
 print("Test accuracy: ", scores[1])
-
-              
-              
-
-
-
-
-
-
