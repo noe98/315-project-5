@@ -14,7 +14,7 @@ import os
 
 batch_size = 16
 num_classes = 10
-epochs = 20
+epochs = 15
 save_dir = os.path.join(os.getcwd(), 'saved_models')
 model_name = 'CSCI_315_CIFAR_10'
 
